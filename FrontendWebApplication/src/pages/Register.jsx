@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { register, me } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import GoogleAuthButton from "../components/GoogleAuthButton";
 
 export default function Register() {
   const { setUser } = useAuth();
@@ -71,7 +70,6 @@ export default function Register() {
           {loading ? "Creating..." : "Create account"}
         </button>
       </form>
-      <GoogleAuthButton variant="register" className="w-full" />
       <p className="mt-4 text-sm text-gray-600">
         Already have an account? <Link to="/login">Sign in</Link>
       </p>

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { login, me } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import GoogleAuthButton from "../components/GoogleAuthButton";
 
 export default function Login() {
   const { setUser } = useAuth();
@@ -55,7 +54,6 @@ export default function Login() {
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
-      <GoogleAuthButton variant="login" className="w-full" />
       <p className="mt-4 text-sm text-gray-600">
         Don't have an account? <Link to="/register">Create one</Link>
       </p>

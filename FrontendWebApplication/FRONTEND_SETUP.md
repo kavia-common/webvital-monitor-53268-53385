@@ -7,7 +7,6 @@ This React app provides the WebVital Monitor frontend UI. It uses Tailwind CSS, 
 1. Copy `.env.example` to `.env` and set values:
 
 - REACT_APP_API_BASE_URL: Backend API base URL (e.g., http://localhost:8080)
-- REACT_APP_GOOGLE_OAUTH_CLIENT_ID: Your Google OAuth client ID (if integrating real Google Sign-In in UI)
 - REACT_APP_SITE_URL: Site base URL
 
 2. Install dependencies:
@@ -25,7 +24,6 @@ This React app provides the WebVital Monitor frontend UI. It uses Tailwind CSS, 
 ## Authentication
 
 - Email/password via POST /api/v1/auth/login and /api/v1/auth/register.
-- Google OAuth is supported via POST /api/v1/auth/google with `id_token`.
 - Access token is stored in localStorage and attached as Bearer token for API calls.
 - Token refresh handled via POST /api/v1/auth/refresh interceptor.
 

@@ -13,7 +13,7 @@ export async function login(email, password) {
   return data;
 }
 
- // PUBLIC_INTERFACE
+// PUBLIC_INTERFACE
 export async function register(email, password, name) {
   /** Register a new user and persist access token if provided by backend */
   const { data } = await api.post("/api/v1/auth/register", {
@@ -22,18 +22,6 @@ export async function register(email, password, name) {
     name,
   });
   // Some backends return access_token on registration
-  if (data?.access_token) {
-    localStorage.setItem("access_token", data.access_token);
-  }
-  return data;
-}
-
-// PUBLIC_INTERFACE
-export async function googleLogin(idToken) {
-  /** Google OAuth via id_token from Google client */
-  const { data } = await api.post("/api/v1/auth/google", {
-    id_token: idToken,
-  });
   if (data?.access_token) {
     localStorage.setItem("access_token", data.access_token);
   }
