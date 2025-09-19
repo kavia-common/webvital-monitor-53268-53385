@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { register, googleLogin, me } from "../api/auth";
+import { register, me } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 export default function Register() {
   const { setUser } = useAuth();
@@ -14,31 +15,18 @@ export default function Register() {
     setErr("");
     setLoading(true);
     try {
-      await register(form.email, form.password, form.name);
-      // Auto-login might be handled by backend; otherwise ask to login
-      window.location.href = "/login";
+      const res = await register(form.email, form.password, form.name);
+      // If backend returned a token we can fetch profile and proceed
+      if (res?.access_token) {
+        const u = await me();
+        setUser(u);
+        window.location.href = "/onboarding";
+      } else {
+        // Otherwise fallback: ask the user to sign in
+        window.location.href = "/login";
+      }
     } catch (e2) {
       setErr(e2?.response?.data?.message || "Registration failed");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleGoogle() {
-    setErr("");
-    setLoading(true);
-    try {
-      const idToken = window.prompt("Enter Google id_token (mock for demo):");
-      if (!idToken) {
-        setLoading(false);
-        return;
-      }
-      await googleLogin(idToken);
-      const u = await me();
-      setUser(u);
-      window.location.href = "/onboarding";
-    } catch (e2) {
-      setErr(e2?.response?.data?.message || "Google sign up failed");
     } finally {
       setLoading(false);
     }
@@ -83,10 +71,7 @@ export default function Register() {
           {loading ? "Creating..." : "Create account"}
         </button>
       </form>
-      <button className="btn w-full mt-3 bg-white text-gray-800 border border-gray-300 hover:bg-gray-50"
-        onClick={handleGoogle} disabled={loading}>
-        Continue with Google
-      </button>
+      <GoogleAuthButton variant="register" className="w-full" />
       <p className="mt-4 text-sm text-gray-600">
         Already have an account? <Link to="/login">Sign in</Link>
       </p>

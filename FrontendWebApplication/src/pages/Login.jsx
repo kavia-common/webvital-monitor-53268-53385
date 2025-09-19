@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { login, googleLogin, me } from "../api/auth";
+import { login, me } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 export default function Login() {
   const { setUser } = useAuth();
@@ -20,28 +21,6 @@ export default function Login() {
       window.location.href = "/";
     } catch (e2) {
       setErr(e2?.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleGoogle() {
-    setErr("");
-    setLoading(true);
-    try {
-      // NOTE: In a real app, you'd use Google SDK to get id_token
-      // Here we expect the backend to support POST /auth/google with id_token
-      const idToken = window.prompt("Enter Google id_token (mock for demo):");
-      if (!idToken) {
-        setLoading(false);
-        return;
-      }
-      await googleLogin(idToken);
-      const u = await me();
-      setUser(u);
-      window.location.href = "/";
-    } catch (e2) {
-      setErr(e2?.response?.data?.message || "Google login failed");
     } finally {
       setLoading(false);
     }
@@ -76,10 +55,7 @@ export default function Login() {
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
-      <button className="btn w-full mt-3 bg-white text-gray-800 border border-gray-300 hover:bg-gray-50"
-        onClick={handleGoogle} disabled={loading}>
-        Continue with Google
-      </button>
+      <GoogleAuthButton variant="login" className="w-full" />
       <p className="mt-4 text-sm text-gray-600">
         Don't have an account? <Link to="/register">Create one</Link>
       </p>
