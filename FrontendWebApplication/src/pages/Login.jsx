@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login, me } from "../api/auth";
+import { login, me, extractErrorMessage } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export default function Login() {
       setUser(u);
       window.location.href = "/";
     } catch (e2) {
-      setErr(e2?.response?.data?.message || "Login failed");
+      setErr(extractErrorMessage(e2, "Login failed"));
     } finally {
       setLoading(false);
     }
